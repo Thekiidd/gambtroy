@@ -1,4 +1,4 @@
-const isProd = process.env.NODE_ENV === 'production';
+const isGithubActions = process.env.GITHUB_ACTIONS || false;
 const repoName = 'gambtroy';
 
 const nextConfig = {
@@ -6,8 +6,7 @@ const nextConfig = {
   output: 'export',
   trailingSlash: true,
   images: { unoptimized: true },
-  basePath: isProd ? `/${repoName}` : '',
-  assetPrefix: isProd ? `/${repoName}/` : '',
+  basePath: isGithubActions ? `/${repoName}` : '',
 };
 
 export default nextConfig;
