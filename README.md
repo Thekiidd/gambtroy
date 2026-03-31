@@ -1,19 +1,28 @@
 # GambTroy
 
-Base técnica inicial del proyecto **Gambling Destroy** siguiendo el plan `GAMBTROY_PLAN_TECNICO.md`.
+MVP demo base for **GambTroy** with English-standardized code, bilingual UI (`es`/`en`), and functional demo flows for auth, blocklist, losses, and guardians.
 
-## Qué se implementó en este arranque
+## Current scope
 
-- Monorepo con `pnpm workspaces` + `turbo`.
-- App web (`apps/web`) en Next.js 14 con landing inicial del MVP.
-- API (`apps/api`) en Fastify con:
-  - seguridad base (`helmet`, `cors`, `rate-limit`, `jwt`),
-  - endpoints iniciales de auth (`/register`, `/login`, `/me`),
-  - endpoint de salud (`/health`).
-- Schema Prisma completo de la versión 1.0 del plan técnico.
-- Docker compose para PostgreSQL + Redis.
+- Monorepo with `pnpm` workspaces + `turbo`.
+- Web app (`apps/web`) with locale routes:
+  - `/es`
+  - `/en`
+  - `/[locale]/legal`
+- API app (`apps/api`) with demo endpoints:
+  - `POST /api/v1/auth/register`
+  - `POST /api/v1/auth/login`
+  - `GET /api/v1/auth/me`
+  - `GET/PATCH /api/v1/users/profile`
+  - `GET/POST/PATCH/DELETE /api/v1/blocklist`
+  - `GET/POST /api/v1/losses` + `/summary`
+  - `POST/GET/PATCH /api/v1/guardian`
+- Prisma schema (full spec v1.0 from technical plan).
+- Docker compose for PostgreSQL + Redis.
 
-## Instalación
+> Note: current API persistence is in-memory demo storage to validate full MVP interaction before wiring Prisma services.
+
+## Run
 
 ```bash
 pnpm install
@@ -22,12 +31,11 @@ docker compose -f docker/docker-compose.yml up -d
 pnpm dev
 ```
 
-## URLs
+## Branding
 
-- Web: http://localhost:3000
-- API: http://localhost:3001
-- Health check: http://localhost:3001/health
+- Product name: **GambTroy**
+- Palette: professional blue scale (`#2563eb`, `#3b82f6`) on light neutral backgrounds.
 
-## Próximo paso sugerido
+## Next implementation step
 
-Implementar persistencia real en auth con Prisma (registro/login) y middleware de auditoría por endpoint.
+Replace in-memory storage with Prisma repositories + migrations + tests.
