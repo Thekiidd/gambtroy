@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { LogOut, LayoutDashboard, ShieldAlert, TrendingDown, Users } from 'lucide-react';
+import { LogOut, LayoutDashboard, ShieldAlert, TrendingDown, Users, ShieldCheck } from 'lucide-react';
 import { apiClient } from '../../../lib/api-client';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -64,9 +64,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <Link href="/es/losses" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', background: pathname.includes('/losses') ? 'rgba(139,92,246,0.1)' : 'transparent', color: pathname.includes('/losses') ? 'var(--purple-light)' : 'var(--text-muted)', textDecoration: 'none', fontWeight: 600 }}>
             <TrendingDown size={20} /> Pérdidas
           </Link>
-          <Link href="/es/guardian" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', background: pathname.includes('/guardian') ? 'rgba(139,92,246,0.1)' : 'transparent', color: pathname.includes('/guardian') ? 'var(--purple-light)' : 'var(--text-muted)', textDecoration: 'none', fontWeight: 600 }}>
-            <Users size={20} /> Guardián
+          <Link href="/es/guardian" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', background: pathname.includes('/guardian') && !pathname.includes('/guardian-panel') ? 'rgba(139,92,246,0.1)' : 'transparent', color: pathname.includes('/guardian') && !pathname.includes('/guardian-panel') ? 'var(--purple-light)' : 'var(--text-muted)', textDecoration: 'none', fontWeight: 600 }}>
+            <Users size={20} /> Invitar
           </Link>
+          
+          {user?.role === 'GUARDIAN' && (
+            <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
+              <div style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0.5rem' }}>Modo Guardián</div>
+              <Link href="/es/guardian-panel" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', background: pathname.includes('/guardian-panel') ? 'rgba(20,184,166,0.1)' : 'transparent', color: pathname.includes('/guardian-panel') ? 'var(--teal)' : 'var(--text-muted)', textDecoration: 'none', fontWeight: 600 }}>
+                <ShieldCheck size={20} /> Ver Ahijados
+              </Link>
+            </div>
+          )}
         </nav>
 
         <div style={{ padding: '1.5rem', borderTop: '1px solid var(--border)' }}>

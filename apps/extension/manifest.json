@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "GambTroy Extensión Oficial",
+  "version": "1.0.0",
+  "description": "El brazo ejecutor de GambTroy. Bloquea el acceso a todas las plataformas restringidas en tu cuenta.",
+  "permissions": [
+    "declarativeNetRequest",
+    "declarativeNetRequestFeedback",
+    "storage",
+    "alarms"
+  ],
+  "host_permissions": [
+    "*://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "128": "icon128.png"
+  }
+}
