@@ -1,0 +1,10 @@
+name: Deploy Web
+
+on:
+  workflow_dispatch:
+
+jobs:
+  placeholder:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Configure deploy pipeline for apps/web"

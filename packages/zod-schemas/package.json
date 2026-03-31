@@ -1,0 +1,6 @@
+{
+  "name": "@gambtroy/zod-schemas",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module"
+}

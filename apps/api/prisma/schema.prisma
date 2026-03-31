@@ -1,0 +1,291 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  GUARDIAN
+  ADMIN
+}
+
+enum Plan {
+  FREE
+  PRO
+  FAMILY
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  emailVerified DateTime?
+  name          String
+  passwordHash  String?
+  role          Role     @default(USER)
+  plan          Plan     @default(FREE)
+  avatarUrl     String?
+  phone         String?
+  timezone      String   @default("America/Chihuahua")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  deletedAt     DateTime?
+
+  profile       UserProfile?
+  sessions      Session[]
+  accounts      Account[]
+  guardianLinks GuardianLink[] @relation("UserGuardian")
+  wardLinks     GuardianLink[] @relation("GuardianUser")
+  blocklist     BlockedSite[]
+  losses        GamblingLoss[]
+  challenges    Challenge[]
+  savings       SavingGoal[]
+  messages      SupportMessage[]
+  notifications Notification[]
+  subscription  Subscription?
+  auditLogs     AuditLog[]
+}
+
+model UserProfile {
+  id               String   @id @default(cuid())
+  userId           String   @unique
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startDate        DateTime @default(now())
+  longestStreak    Int      @default(0)
+  currentStreak    Int      @default(0)
+  totalLost        Decimal  @default(0) @db.Decimal(12, 2)
+  totalSaved       Decimal  @default(0) @db.Decimal(12, 2)
+  emergencyContact String?
+  bio              String?
+  isPublicProfile  Boolean  @default(false)
+  updatedAt        DateTime @updatedAt
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model Account {
+  id                String @id @default(cuid())
+  userId            String
+  user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider          String
+  providerAccountId String
+  accessToken       String?
+  refreshToken      String?
+  expiresAt         Int?
+
+  @@unique([provider, providerAccountId])
+}
+
+model GuardianLink {
+  id          String               @id @default(cuid())
+  userId      String
+  user        User                 @relation("UserGuardian", fields: [userId], references: [id])
+  guardianId  String
+  guardian    User                 @relation("GuardianUser", fields: [guardianId], references: [id])
+  status      GuardianStatus       @default(PENDING)
+  permissions GuardianPermission[]
+  inviteToken String?              @unique
+  invitedAt   DateTime             @default(now())
+  acceptedAt  DateTime?
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+
+  @@unique([userId, guardianId])
+}
+
+enum GuardianStatus {
+  PENDING
+  ACTIVE
+  REVOKED
+}
+
+model GuardianPermission {
+  id             String       @id @default(cuid())
+  guardianLinkId String
+  guardianLink   GuardianLink @relation(fields: [guardianLinkId], references: [id], onDelete: Cascade)
+  permission     Permission
+  granted        Boolean      @default(true)
+  grantedAt      DateTime     @default(now())
+
+  @@unique([guardianLinkId, permission])
+}
+
+enum Permission {
+  VIEW_LOSSES
+  VIEW_STREAK
+  MANAGE_BLOCKLIST
+  APPROVE_UNBLOCK
+  VIEW_CHALLENGES
+  EDIT_CHALLENGES
+  VIEW_MESSAGES
+  RECEIVE_ALERTS
+  EMERGENCY_CONTACT
+}
+
+model BlockedSite {
+  id                        String       @id @default(cuid())
+  userId                    String
+  user                      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  domain                    String
+  name                      String
+  category                  SiteCategory
+  isActive                  Boolean      @default(true)
+  addedBy                   String
+  requiresGuardianToUnblock Boolean      @default(true)
+  createdAt                 DateTime     @default(now())
+  updatedAt                 DateTime     @updatedAt
+
+  @@unique([userId, domain])
+}
+
+enum SiteCategory {
+  CASINO
+  SPORTS_BETTING
+  POKER
+  LOTTERY
+  SLOTS
+  OTHER
+}
+
+model GamblingLoss {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount      Decimal  @db.Decimal(12, 2)
+  currency    String   @default("MXN")
+  description String?
+  platform    String?
+  date        DateTime
+  isEstimate  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([userId, date])
+}
+
+model Challenge {
+  id           String          @id @default(cuid())
+  userId       String
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type         ChallengeType
+  title        String
+  description  String?
+  targetValue  Decimal?        @db.Decimal(12, 2)
+  targetDays   Int?
+  currentValue Decimal         @default(0) @db.Decimal(12, 2)
+  status       ChallengeStatus @default(ACTIVE)
+  startDate    DateTime        @default(now())
+  endDate      DateTime?
+  completedAt  DateTime?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+}
+
+enum ChallengeType {
+  DAYS_CLEAN
+  SAVE_MONEY
+  PAY_DEBT
+  CUSTOM
+}
+
+enum ChallengeStatus {
+  ACTIVE
+  COMPLETED
+  FAILED
+  PAUSED
+}
+
+model SavingGoal {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  targetAmount Decimal  @db.Decimal(12, 2)
+  savedAmount  Decimal  @default(0) @db.Decimal(12, 2)
+  deadline     DateTime?
+  emoji        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model SupportMessage {
+  id        String      @id @default(cuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      MessageRole
+  content   String      @db.Text
+  sentiment String?
+  isUrse    Boolean     @default(false)
+  createdAt DateTime    @default(now())
+
+  @@index([userId, createdAt])
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      NotificationType
+  title     String
+  body      String
+  data      Json?
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  @@index([userId, read])
+}
+
+enum NotificationType {
+  STREAK_MILESTONE
+  CHALLENGE_COMPLETE
+  GUARDIAN_ACTION
+  IMPULSE_LOGGED
+  WEEKLY_SUMMARY
+  SYSTEM
+}
+
+model Subscription {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id])
+  stripeCustomerId  String?  @unique
+  stripeSubId       String?  @unique
+  plan              Plan
+  status            String
+  currentPeriodEnd  DateTime?
+  cancelAtPeriodEnd Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  action     String
+  entityType String?
+  entityId   String?
+  metadata   Json?
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
