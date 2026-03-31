@@ -8,3 +8,6 @@ coverage
 !.env.example
 apps/api/prisma/dev.db
 apps/api/prisma/dev.db-journal
+out
+out/
+apps/web/out/

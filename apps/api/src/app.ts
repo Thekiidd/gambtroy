@@ -14,7 +14,7 @@ import { userRoutes } from './routes/users/index.js';
 export function buildApp() {
   const app = Fastify({ logger: true });
 
-  app.register(cors, { origin: env.APP_URL, credentials: true });
+  app.register(cors, { origin: [env.APP_URL, 'https://Thekiidd.github.io'], credentials: true });
   app.register(helmet);
   app.register(rateLimit, { max: 100, timeWindow: '1 minute' });
   app.register(jwt, { secret: env.JWT_SECRET });
