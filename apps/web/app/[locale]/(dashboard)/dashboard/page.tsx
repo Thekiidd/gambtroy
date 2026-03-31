@@ -60,13 +60,13 @@ export default function DashboardPage() {
       <section style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '16px', padding: '1.5rem' }}>
         <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem' }}>Acciones rápidas</h2>
         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-          <Link href="/es/dashboard/blocklist" style={{ flex: 1, textDecoration: 'none', minWidth: '200px', padding: '1rem', borderRadius: '12px', background: 'var(--grad)', color: '#fff', border: 'none', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+          <Link href="/es/blocklist" style={{ flex: 1, textDecoration: 'none', minWidth: '200px', padding: '1rem', borderRadius: '12px', background: 'var(--grad)', color: '#fff', border: 'none', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer' }}>
             <Plus size={18} /> Gestionar bloqueos
           </Link>
-          <Link href="/es/dashboard/losses" style={{ flex: 1, textDecoration: 'none', minWidth: '200px', padding: '1rem', borderRadius: '12px', background: 'var(--bg-2)', color: 'var(--text)', border: '1px solid var(--border)', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+          <Link href="/es/losses" style={{ flex: 1, textDecoration: 'none', minWidth: '200px', padding: '1rem', borderRadius: '12px', background: 'var(--bg-2)', color: 'var(--text)', border: '1px solid var(--border)', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer' }}>
             <TrendingDown size={18} /> Ver pérdidas
           </Link>
-          <Link href="/es/dashboard/guardian" style={{ flex: 1, textDecoration: 'none', minWidth: '200px', padding: '1rem', borderRadius: '12px', background: 'rgba(20,184,166,0.1)', color: 'var(--teal)', border: '1px solid rgba(20,184,166,0.2)', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+          <Link href="/es/guardian" style={{ flex: 1, textDecoration: 'none', minWidth: '200px', padding: '1rem', borderRadius: '12px', background: 'rgba(20,184,166,0.1)', color: 'var(--teal)', border: '1px solid rgba(20,184,166,0.2)', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer' }}>
             <Users size={18} /> Invitar Guardián
           </Link>
         </div>

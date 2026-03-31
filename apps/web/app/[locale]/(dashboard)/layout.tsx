@@ -58,13 +58,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <Link href="/es/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', background: pathname === '/es/dashboard' ? 'rgba(139,92,246,0.1)' : 'transparent', color: pathname === '/es/dashboard' ? 'var(--purple-light)' : 'var(--text-muted)', textDecoration: 'none', fontWeight: 600 }}>
             <LayoutDashboard size={20} /> Panel
           </Link>
-          <Link href="/es/dashboard/blocklist" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', background: pathname.includes('/blocklist') ? 'rgba(139,92,246,0.1)' : 'transparent', color: pathname.includes('/blocklist') ? 'var(--purple-light)' : 'var(--text-muted)', textDecoration: 'none', fontWeight: 600 }}>
+          <Link href="/es/blocklist" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', background: pathname.includes('/blocklist') ? 'rgba(139,92,246,0.1)' : 'transparent', color: pathname.includes('/blocklist') ? 'var(--purple-light)' : 'var(--text-muted)', textDecoration: 'none', fontWeight: 600 }}>
             <ShieldAlert size={20} /> Bloqueos
           </Link>
-          <Link href="/es/dashboard/losses" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', background: pathname.includes('/losses') ? 'rgba(139,92,246,0.1)' : 'transparent', color: pathname.includes('/losses') ? 'var(--purple-light)' : 'var(--text-muted)', textDecoration: 'none', fontWeight: 600 }}>
+          <Link href="/es/losses" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', background: pathname.includes('/losses') ? 'rgba(139,92,246,0.1)' : 'transparent', color: pathname.includes('/losses') ? 'var(--purple-light)' : 'var(--text-muted)', textDecoration: 'none', fontWeight: 600 }}>
             <TrendingDown size={20} /> Pérdidas
           </Link>
-          <Link href="/es/dashboard/guardian" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', background: pathname.includes('/guardian') ? 'rgba(139,92,246,0.1)' : 'transparent', color: pathname.includes('/guardian') ? 'var(--purple-light)' : 'var(--text-muted)', textDecoration: 'none', fontWeight: 600 }}>
+          <Link href="/es/guardian" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', background: pathname.includes('/guardian') ? 'rgba(139,92,246,0.1)' : 'transparent', color: pathname.includes('/guardian') ? 'var(--purple-light)' : 'var(--text-muted)', textDecoration: 'none', fontWeight: 600 }}>
             <Users size={20} /> Guardián
           </Link>
         </nav>
