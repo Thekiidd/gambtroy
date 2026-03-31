@@ -1,12 +1,13 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { LogOut, LayoutDashboard, ShieldAlert, TrendingDown, Users } from 'lucide-react';
 import { apiClient } from '../../../lib/api-client';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
 
@@ -54,18 +55,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
         
         <nav style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
-          <Link href="/es/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', background: 'rgba(139,92,246,0.1)', color: 'var(--purple-light)', textDecoration: 'none', fontWeight: 600 }}>
+          <Link href="/es/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', background: pathname === '/es/dashboard' ? 'rgba(139,92,246,0.1)' : 'transparent', color: pathname === '/es/dashboard' ? 'var(--purple-light)' : 'var(--text-muted)', textDecoration: 'none', fontWeight: 600 }}>
             <LayoutDashboard size={20} /> Panel
           </Link>
-          <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 500, pointerEvents: 'none', opacity: 0.5 }}>
-            <ShieldAlert size={20} /> Sitios (Próximamente)
-          </a>
-          <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 500, pointerEvents: 'none', opacity: 0.5 }}>
+          <Link href="/es/dashboard/blocklist" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', background: pathname.includes('/blocklist') ? 'rgba(139,92,246,0.1)' : 'transparent', color: pathname.includes('/blocklist') ? 'var(--purple-light)' : 'var(--text-muted)', textDecoration: 'none', fontWeight: 600 }}>
+            <ShieldAlert size={20} /> Bloqueos
+          </Link>
+          <Link href="/es/dashboard/losses" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', background: pathname.includes('/losses') ? 'rgba(139,92,246,0.1)' : 'transparent', color: pathname.includes('/losses') ? 'var(--purple-light)' : 'var(--text-muted)', textDecoration: 'none', fontWeight: 600 }}>
             <TrendingDown size={20} /> Pérdidas
-          </a>
-          <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 500, pointerEvents: 'none', opacity: 0.5 }}>
-            <Users size={20} /> Guardianes
-          </a>
+          </Link>
+          <Link href="/es/dashboard/guardian" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', background: pathname.includes('/guardian') ? 'rgba(139,92,246,0.1)' : 'transparent', color: pathname.includes('/guardian') ? 'var(--purple-light)' : 'var(--text-muted)', textDecoration: 'none', fontWeight: 600 }}>
+            <Users size={20} /> Guardián
+          </Link>
         </nav>
 
         <div style={{ padding: '1.5rem', borderTop: '1px solid var(--border)' }}>

@@ -96,7 +96,7 @@ export async function authRoutes(app: FastifyInstance): Promise<void> {
     
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { id: true, email: true, name: true, role: true, profile: true }
+      select: { id: true, email: true, name: true, role: true, profile: true, _count: { select: { blocklist: true } } }
     });
 
     if (!user) {
