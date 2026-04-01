@@ -1,96 +1,193 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>GambTroy</title>
+  <meta charset="UTF-8" />
+  <title>GambTroy — Extensión</title>
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      width: 300px;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: #0f172a;
-      color: #fff;
-      margin: 0;
-      padding: 1rem;
-    }
-    h1 {
-      font-size: 1.25rem;
-      margin-top: 0;
+      width: 320px;
+      background: #0d0d14;
       color: #e2e8f0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+    }
+    .header {
+      background: linear-gradient(135deg, #8b5cf6, #14b8a6);
+      padding: 16px 18px;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 10px;
     }
-    .status-card {
-      background: #1e293b;
-      border: 1px solid #334155;
-      padding: 1rem;
+    .logo {
+      width: 32px; height: 32px;
+      background: rgba(255,255,255,0.15);
       border-radius: 8px;
-      margin-bottom: 1rem;
-      text-align: center;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
     }
-    .status-badge {
-      display: inline-block;
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: bold;
+    .header-text h1 { font-size: 15px; font-weight: 800; color: #fff; }
+    .header-text p { font-size: 11px; color: rgba(255,255,255,0.7); }
+
+    .content { padding: 18px; }
+
+    /* Unauth */
+    #unauth-view h2 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    #unauth-view p { font-size: 12px; color: #94a3b8; line-height: 1.6; margin-bottom: 14px; }
+
+    .steps { margin-bottom: 14px; }
+    .step { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
+    .step-num {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: linear-gradient(135deg, #8b5cf6, #14b8a6);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800; color: #fff; flex-shrink: 0;
     }
-    .status-badge.active {
-      background: rgba(20, 184, 166, 0.2);
-      color: #14b8a6;
-      border: 1px solid #14b8a6;
+    .step p { font-size: 11.5px; color: #cbd5e1; line-height: 1.5; }
+    .step code {
+      background: rgba(139,92,246,0.15);
+      border: 1px solid rgba(139,92,246,0.3);
+      padding: 1px 5px; border-radius: 4px;
+      font-size: 10.5px; color: #c4b5fd;
     }
-    .status-badge.inactive {
-      background: rgba(239, 68, 68, 0.2);
-      color: #ef4444;
-      border: 1px solid #ef4444;
-    }
+
     input {
       width: 100%;
-      padding: 0.5rem;
-      box-sizing: border-box;
-      background: #0f172a;
-      border: 1px solid #475569;
-      color: white;
-      border-radius: 4px;
-      margin-bottom: 0.5rem;
+      background: #1a1a2e;
+      border: 1px solid #2d2d44;
+      border-radius: 10px;
+      padding: 10px 12px;
+      color: #e2e8f0;
+      font-size: 12px;
+      margin-bottom: 10px;
+      outline: none;
+      font-family: monospace;
     }
+    input:focus { border-color: #8b5cf6; }
+    input::placeholder { color: #475569; }
+
     button {
       width: 100%;
-      padding: 0.5rem;
-      background: linear-gradient(135deg, #8b5cf6, #3b82f6);
-      color: white;
+      padding: 10px;
+      border-radius: 10px;
       border: none;
-      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 700;
       cursor: pointer;
-      font-weight: bold;
+      transition: opacity 0.2s;
     }
-    p.muted {
-      font-size: 0.8rem;
-      color: #94a3b8;
+    button:hover { opacity: 0.85; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-primary { background: linear-gradient(135deg, #8b5cf6, #14b8a6); color: #fff; }
+    .btn-secondary { background: #1e1e30; border: 1px solid #2d2d44; color: #94a3b8; margin-top: 8px; }
+    .btn-danger { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #f87171; margin-top: 8px; }
+
+    /* Auth view */
+    #auth-view { display: none; }
+    .status-card {
+      background: rgba(20,184,166,0.08);
+      border: 1px solid rgba(20,184,166,0.25);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+    .status-icon { font-size: 28px; margin-bottom: 6px; }
+    .status-card h2 { font-size: 14px; font-weight: 800; color: #14b8a6; margin-bottom: 4px; }
+    .status-card p { font-size: 12px; color: #94a3b8; }
+    .block-count { font-size: 32px; font-weight: 900; color: #e2e8f0; }
+    .block-label { font-size: 12px; color: #64748b; }
+
+    .divider { height: 1px; background: #1e1e30; margin: 14px 0; }
+
+    .info-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 0;
+      font-size: 12px;
+    }
+    .info-row span:first-child { color: #64748b; }
+    .badge {
+      background: rgba(20,184,166,0.1);
+      color: #14b8a6;
+      padding: 2px 8px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .badge-red {
+      background: rgba(239,68,68,0.1);
+      color: #f87171;
     }
   </style>
 </head>
 <body>
-  <h1>🎯 GambTroy</h1>
-  
-  <div id="unauth-view">
-    <p class="muted">Ingresa tu Token de Enlace desde el Dashboard para activar el escudo en este navegador.</p>
-    <input type="password" id="token-input" placeholder="Pega tu token aquí..." />
-    <button id="save-btn">Vincular Dispositivo</button>
+  <div class="header">
+    <div class="logo">🎯</div>
+    <div class="header-text">
+      <h1>GambTroy</h1>
+      <p>El Bloqueador Real</p>
+    </div>
   </div>
 
-  <div id="auth-view" style="display: none;">
-    <div class="status-card">
-      <div style="margin-bottom: 0.5rem;">Estado de Protección</div>
-      <div class="status-badge active" id="status-badge">ACTIVO</div>
+  <div class="content">
+
+    <!-- UNAUTH VIEW -->
+    <div id="unauth-view">
+      <h2>Vincula este dispositivo</h2>
+      <p>Pega tu token JWT para activar el bloqueo físico de sitios en este navegador.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <p>Abre <strong>GambTroy</strong> y entra a tu cuenta</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <p>Abre las DevTools → Application → Local Storage → copia el valor de <code>token</code></p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <p>Pégalo abajo y haz click en Vincular</p>
+        </div>
+      </div>
+
+      <input id="token-input" type="password" placeholder="eyJhbGciOi... (token JWT)" />
+      <button id="save-btn" class="btn-primary">🔗 Vincular Dispositivo</button>
     </div>
-    <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
-      <span class="muted">Sitios bloqueados:</span>
-      <span id="block-count" style="font-weight: bold;">0</span>
+
+    <!-- AUTH VIEW -->
+    <div id="auth-view">
+      <div class="status-card">
+        <div class="status-icon">🛡️</div>
+        <h2>Protección Activa</h2>
+        <p>Este dispositivo está monitoreado</p>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 14px;">
+        <div class="block-count" id="block-count">0</div>
+        <div class="block-label">sitios bloqueados activos</div>
+      </div>
+
+      <div class="info-row">
+        <span>Estado</span>
+        <span class="badge">✓ Sincronizado</span>
+      </div>
+      <div class="info-row">
+        <span>Actualización</span>
+        <span class="badge">Cada 15 min</span>
+      </div>
+      <div class="info-row">
+        <span>Motor</span>
+        <span style="font-size: 11px; color: #475569;">declarativeNetRequest</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <button id="sync-btn" class="btn-secondary">🔄 Sincronizar Manualmente</button>
+      <button id="logout-btn" class="btn-danger">⚠️ Desactivar Protección</button>
     </div>
-    <button id="sync-btn" style="background: #334155;">Sincronizar Manualmente</button>
-    <button id="logout-btn" style="background: transparent; color: #ef4444; border: 1px solid #ef4444; margin-top: 0.5rem;">Forzar Desvinculación</button>
+
   </div>
 
   <script src="popup.js"></script>
