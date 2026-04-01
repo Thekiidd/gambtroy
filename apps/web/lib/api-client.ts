@@ -1,5 +1,6 @@
-const isProd = process.env.NODE_ENV === 'production';
-const BASE_URL = isProd ? 'https://gambtroy.onrender.com/api/v1' : 'http://localhost:3001/api/v1';
+// DEV:  lee apps/web/.env.local        → NEXT_PUBLIC_API_URL=http://localhost:3001/api/v1
+// PROD: lee apps/web/.env.production   → NEXT_PUBLIC_API_URL=https://gambtroy.onrender.com/api/v1
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'https://gambtroy.onrender.com/api/v1';
 
 class ApiError extends Error {
   status: number;
