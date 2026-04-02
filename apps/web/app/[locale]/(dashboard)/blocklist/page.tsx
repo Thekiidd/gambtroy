@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { ShieldAlert, Trash2, Plus, AlertCircle, CheckCircle2, Globe, Download, ExternalLink, Chrome, Zap, ShieldOff, Lock } from 'lucide-react';
+import { ShieldAlert, Trash2, Plus, AlertCircle, CheckCircle2, Globe, Download, ExternalLink, Puzzle, Zap, ShieldOff, Lock } from 'lucide-react';
 import { apiClient } from '../../../../lib/api-client';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -177,7 +177,7 @@ export default function BlocklistPage() {
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
               <div style={{ width: '44px', height: '44px', background: 'var(--grad)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <Chrome size={22} color="#fff" />
+                <Puzzle size={22} color="#fff" />
               </div>
               <div style={{ flex: 1, minWidth: '200px' }}>
                 <div style={{ fontWeight: 700, marginBottom: '0.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
